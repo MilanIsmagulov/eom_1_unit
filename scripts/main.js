@@ -59,7 +59,6 @@ function waitForData() {
         window.addEventListener('resize', adjustContentWrapper);
 
         const isMainWindow = document.getElementById('content');
-
         const contentWindow = document.createElement('div');
         contentWindow.classList.add('content__div');
         isMainWindow.appendChild(contentWindow);
@@ -126,7 +125,7 @@ function waitForData() {
             allHexagoneBtn.forEach(function(item, index) {
                 if (index < themesNameArr.length) {
                     item.innerHTML = (index + 1) + '. ' + themesNameArr[index];
-                    item.setAttribute('onclick', `location.href='#'`);
+                    // item.setAttribute('onclick', `location.href='#'`);
                 } else {
                     item.classList.add('hidden_block');
                 }
@@ -159,7 +158,7 @@ function waitForData() {
                 button.classList = 'lightning_button themes_button';
                 // Добавляем обработчик клика для кнопки
                 button.onclick = function() {
-                    location.href = '#'; // Здесь нужный URL
+                    // location.href = '#'; // Здесь нужный URL
                 };
                 button.innerHTML = `<p class="themes_lightning">${index + 1}. ${theme}</p>`;
 
@@ -194,21 +193,132 @@ function waitForData() {
             } 
 
         } else if (typeOfButtons === 'tiles') {
-            console.log('tiles')
+            const themesNameArr = themesOfEOM1.split('\n');
+            let numberOfColumns, numberOfRows, centralRowIndex;
+            // Определение количества строк и колонок
+            if (themesNameArr.length === 12) {
+                numberOfColumns = 4;
+                numberOfRows = 4;
+            } else if (themesNameArr.length <= 9) {
+                numberOfColumns = Math.ceil(themesNameArr.length / 4);
+                numberOfRows = Math.ceil(themesNameArr.length / numberOfColumns);
+            } else if (themesNameArr.length <= 15) {
+                numberOfColumns = 5;
+                numberOfRows = 3;  // Увеличиваем количество строк
+            } else if (themesNameArr.length <= 18) {
+                numberOfColumns = 5;
+                numberOfRows = 4;  // Увеличиваем количество строк
+            } else if (themesNameArr.length <= 20) {
+                numberOfColumns = 5;
+                numberOfRows = 4;  // Увеличиваем количество строк
+            } else {
+                numberOfColumns = Math.ceil(themesNameArr.length / 4);
+                numberOfRows = Math.ceil(themesNameArr.length / numberOfColumns);
+            }
+
+
+            // Определение индекса центральной строки
+            centralRowIndex = Math.floor(numberOfRows / 3);
+            if (themesNameArr.length >= 11) {
+                centralRowIndex = Math.floor(numberOfRows / 1);
+            }
+            let contentWindowCenter = document.querySelector('.content__div_center');
+            contentWindowCenter.classList.add('tiles');
+
+            // Создание строк и кнопок
+            for (let i = 0; i < numberOfRows; i++) {
+                let rowOfTiles = document.createElement('div');
+                rowOfTiles.classList.add('rows__tiles');
+                contentWindowCenter.appendChild(rowOfTiles);
+
+                let buttonsInRow = numberOfColumns;
+                
+                // Увеличиваем количество кнопок в центральной строке
+                if (i === centralRowIndex) {
+                    buttonsInRow = numberOfColumns + 2; // Добавляем 2 кнопки больше, чем в других строках
+                } 
+                
+                for (let j = 0; j < buttonsInRow; j++) {
+                    let tileBtn = document.createElement('button');
+                    tileBtn.classList.add('button__tiles_type');
+                    if (themesNameArr.length >= 15) {
+                        tileBtn.classList.add('small_tile');
+                        rowOfTiles.classList.add('small_tile_center');
+                    }
+                    if (themesNameArr.length === 12){
+                        contentWindow.classList.add('big_left_side');
+                    }
+                    tileBtn.classList.add('themes_button');
+                    rowOfTiles.appendChild(tileBtn);
+                }
+            }
+            // Обновление кнопок с темами
+            let allTilesBtn = document.querySelectorAll('.button__tiles_type');
+            
+
+
+            allTilesBtn.forEach(function(item, index) {
+                if (index < themesNameArr.length) {
+                    item.innerHTML = (index + 1) + '. ' + themesNameArr[index];
+                    // item.setAttribute('onclick', `location.href='#'`);
+                } else {
+                    item.classList.add('hidden_block');
+                }
+            });
+
+            console.log(window.innerHeight)
+            
+            let contentDivTiles = document.querySelector('.content__div');
+            contentDivTiles.style.height = (window.innerHeight - document.querySelector('#header').clientHeight - 80) + 'px';
+            let tilesField = document.querySelector('.content__div_center');
+            // Увеличиваем высоту на 100 пикселей
+            let newHeight = tilesField.clientHeight + 80;
+            // Применяем новую высоту
+            tilesField.style.height = newHeight + 'px';
 
         } else if (typeOfButtons === 'video') {
-            console.log('video')
+            let contentDiv = document.querySelector('#content');
+            
+            contentDiv.innerHTML = '';
+            contentDiv.innerHTML = `<div class="video_title">${videoTitle}</div>`;
+            contentDiv.classList.add('video_div');
+            let videoDiv = document.createElement('div');
+            videoDiv.classList = 'video_content';
+            videoDiv.innerHTML = `<video id="video_content_0" src="${pathToVideo}" controls="controls" controlslist="nodownload"></video>`;
+            contentDiv.appendChild(videoDiv);
 
+            let timingDiv = document.createElement('div');
+            timingDiv.classList = 'video_timing';
+            contentDiv.appendChild(timingDiv);
+
+            let viewportHeight = window.innerHeight;
+            let blackHeaderHeight = document.querySelector('#header').clientHeight;
+            document.querySelector('#content').style.height = (viewportHeight - blackHeaderHeight*2 + 11) + 'px';
+            let buttonsHTML = timings.map((item, index) => 
+                `<button class="timing_buttons" value="${item.time}" id="timing0${index+1}">${item.name}</button>`
+            ).join('');
+            let timingStructure = 
+            `<div class="timing_menu">
+                <div class="timing_button">
+                    <details id="timing_menu" open="">
+                        <summary><img src="./content/logo_player.png" alt="Timing"></summary>
+                        <div class="content_details">
+                            ${buttonsHTML}
+                        </div>
+                    </details>
+                </div>
+            </div>`
+            timingDiv.innerHTML = timingStructure;
         }
 
-        let mainDivContent = document.querySelector('#contentWrapper')
+        let mainDivContent = document.querySelector('#contentWrapper');
         let popUpStructure = 
         `<div id="popup_litera_1" class="popup disabled">
                 <div class="popup_body">
                     <div class="popup_content">
                         <div class="popup_header">
                             <h3>Список литературы</h3>
-                            <button class="close_popup" onclick="document.querySelector('#popup_litera_1').classList.add('disabled')"><img src="./content/close.svg" alt="close"></button>
+                            <button class="close_popup litera" onclick="document.querySelector('#popup_litera_1').classList.add('disabled')"><img src="./content/close.svg" alt="close"></button>
                         </div>
                     <div class="popup_text" id="popup_text_2">
                         <ol>
@@ -217,26 +327,66 @@ function waitForData() {
                     </div>
                 </div>
             </div>
-        </div>`
+        </div>`;
         mainDivContent.innerHTML += popUpStructure;
-        let literaBtnOn = document.querySelector('.content__litera_btn');
-        literaBtnOn.onclick = function() {
-            let popupWindow = document.querySelector('#popup_litera_1');
-            popupWindow.classList.remove('disabled');
-        };
+        if (typeOfButtons != 'video'){
+            let literaBtnOn = document.querySelector('.content__litera_btn');
+            literaBtnOn.onclick = function() {
+                let popupWindow = document.querySelector('#popup_litera_1');
+                popupWindow.classList.remove('disabled');
+            };
+        }
+
+        const video = document.querySelector('#video_content_0');
+        const timingButtons = document.querySelectorAll('.timing_buttons');
+        timingButtons.forEach((item) => {
+            item.onclick = () => {
+                const offset = parseFloat(item.value); // Получаем значение тайминга из атрибута value кнопки
+                const videoDuration = video.duration; // Получаем общую длину видео в секундах
+                const newTime = videoDuration * (offset / 100); // Рассчитываем новое время видео
+                video.pause(); // Останавливаем видео
+                video.currentTime = newTime; // Устанавливаем новое время
+            };
+        });
 
     } else {
         // Если данные ещё не загружены, ждем и проверяем снова
         setTimeout(waitForData, location.reload(),  50);
     }
 
-    let viewportHeight = window.innerHeight
-    let blackHeaderHeight = document.querySelector('#header').clientHeight
-    document.querySelector('.content__div').style.height = (viewportHeight - blackHeaderHeight*2 +10 ) + 'px';
+    let viewportHeight = window.innerHeight;
+    let blackHeaderHeight = document.querySelector('#header').clientHeight;
+    
+    window.addEventListener('resize', function(){
+        if (typeOfButtons === 'video') { // Проверьте правильность переменной
+            if (window.innerWidth <= 1100){
+                let videoContentDiv = document.querySelector('.video_div');
+                videoContentDiv.style.setProperty('height', 'initial', 'important'); // Устанавливаем важное свойство стиля
+            }
+        }
+    });
+
+    window.addEventListener('resize', function(){
+        if (typeOfButtons === 'lightning') { // Проверьте правильность переменной
+            let videoContentDiv = document.querySelector('.content__div');
+            if (window.innerWidth <= 1100){
+                videoContentDiv.style.height = (viewportHeight - blackHeaderHeight * 2 + 225 + 10) + 'px'; // Устанавливаем важное свойство стиля
+            } else {
+                videoContentDiv.style.height = (viewportHeight - blackHeaderHeight * 2 + 10) + 'px';
+            }
+        }
+    });
 
 
-
+    if (typeOfButtons != 'video' && typeOfButtons != 'tiles') {
+        document.querySelector('.content__div').style.height = (viewportHeight - blackHeaderHeight * 2 + 10) + 'px';
+    }
 }
+
+let toMenuBtn = document.querySelector('#backward_button');
+toMenuBtn.onclick = () => {
+    window.location.reload();
+};
 
 waitForData();
 
