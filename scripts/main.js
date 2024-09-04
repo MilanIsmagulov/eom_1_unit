@@ -41,7 +41,7 @@ function waitForData() {
         function restoreTitle(element, originalTitle) {
             element.innerText = originalTitle;  // Восстанавливаем оригинальный заголовок
         }
-
+        restoreTitle(blackHeader, originalTitle);
         function shortenTitle(element, maxLength) {
             let title = element.innerHTML;  // Получаем заголовок элемента
             if (title.length > maxLength) {
