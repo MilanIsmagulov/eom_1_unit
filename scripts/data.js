@@ -1,7 +1,7 @@
 window.dataLoaded = false;
     let title_of_eom = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste fugiat voluptatum quos rerum, repudiandae doloribus dolores pariatur explicabo laborum corporis!';
     let methodRecomendation = 'fghfghfhfg Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste fugiat voluptatum quos rerum, repudiandae doloribus dolores pariatur explicabo laborum corporis!';
-    let dropType = 15;
+    let dropType = 2;
     let typeOfButtons = 'hexagon'; // Можер быть "hexagon", "lightning", "tiles" или "video";
 
     let timings = [ // если typeOfButtons = 'video'

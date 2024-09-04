@@ -459,6 +459,8 @@ p {
 .small {
     width: 350px !important;
     height: 6vh !important;
+    max-height: 45px;
+    min-height: 40px;
 }
 
 .small p{

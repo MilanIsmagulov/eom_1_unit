@@ -12,17 +12,18 @@ backgroundImage.classList = 'background_image';
 mainBody.appendChild(backgroundImage);
 miniHead.innerHTML = `originalTitle`;
 
-var typeOfDrop = `<img width="100%" src="../../content/background_${background_type}.jpg" alt="background">`;
+var typeOfDrop = `<img width="100%" src="./content/background_${background_type}.jpg" alt="background">`;
 
 backgroundImage.innerHTML = typeOfDrop;
 
 function waitForData() {
-    miniHead.innerHTML = originalTitle;
+    if (window.dataLoaded){
+        miniHead.innerHTML = originalTitle;
     if (window.dataLoaded) {
         window.addEventListener('load',() => {
             let windowWidth  = window.innerWidth;
             if (windowWidth  <=  650){
-                shortenTitle(blackHeader, 30);  // Сокращаем заголовок до 20 символов
+                shortenTitle(blackHeader, 30);
             } else {
                 restoreTitle(blackHeader, originalTitle);
             }
@@ -31,7 +32,7 @@ function waitForData() {
         window.addEventListener('resize',() => {
             let windowWidth  = window.innerWidth;
             if (windowWidth  <=  650) {
-                shortenTitle(blackHeader, 30);  // Сокращаем заголовок до 20 символов
+                shortenTitle(blackHeader, 30);
             } else {
                 restoreTitle(blackHeader, originalTitle);
             }
@@ -80,7 +81,7 @@ function waitForData() {
     
         const contentWindowRight = document.createElement('div');
         contentWindowRight.classList.add('content__div_right');
-        contentWindowRight.innerHTML = `<img src="./../content/drop_logo_${dropType}.png" alt="drop_logo">`;
+        contentWindowRight.innerHTML = `<img src="./content/drop_logo_${dropType}.png" alt="drop_logo">`;
         contentWindow.appendChild(contentWindowRight);
 
         const themesNameArr = themesOfEOM1.split('\n');
@@ -418,6 +419,7 @@ function waitForData() {
 
 
 
+    }
 }
 
 let toMenuBtn = document.querySelector('#backward_button');
