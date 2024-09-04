@@ -10,6 +10,7 @@ backgroundColor.classList = 'background_color';
 mainBody.appendChild(backgroundColor);
 backgroundImage.classList = 'background_image';
 mainBody.appendChild(backgroundImage);
+miniHead.innerHTML = `originalTitle`;
 
 var typeOfDrop = `<img width="100%" src="../../content/background_${background_type}.jpg" alt="background">`;
 
@@ -85,28 +86,58 @@ function waitForData() {
         const themesNameArr = themesOfEOM1.split('\n');
         let numberOfColumns, numberOfRows;
         
-        if (themesNameArr.length === 12) {
-            numberOfColumns = 4;
-            numberOfRows = 3;
-        } else if (themesNameArr.length <= 9) {
-            numberOfColumns = Math.ceil(themesNameArr.length / 3);
-            numberOfRows = Math.ceil(themesNameArr.length / numberOfColumns);
-        } else if (themesNameArr.length <= 12) {
-            numberOfColumns = 4;
-            numberOfRows = 3;
-        } else if (themesNameArr.length <= 15) {
-            numberOfColumns = 5;
-            numberOfRows = 3;
-        } else if (themesNameArr.length <= 18) {
-            numberOfColumns = 6;
-            numberOfRows = 3;
-        } else if (themesNameArr.length <= 20) {
-            numberOfColumns = 5;
-            numberOfRows = 4;
-        } else {
-            numberOfColumns = Math.ceil(themesNameArr.length / 4);
-            numberOfRows = Math.ceil(themesNameArr.length / numberOfColumns);
-        }
+            if (window.innerWidth > 1175) {
+                // Ширина окна больше 1175 пикселей
+                if (themesNameArr.length === 12) {
+                    numberOfColumns = 4;
+                    numberOfRows = 3;
+                } else if (themesNameArr.length <= 9) {
+                    numberOfColumns = Math.ceil(themesNameArr.length / 4);
+                    numberOfRows = Math.ceil(themesNameArr.length / numberOfColumns);
+                } else if (themesNameArr.length <= 15) {
+                    numberOfColumns = 5;
+                    numberOfRows = 3;
+                } else if (themesNameArr.length <= 18) {
+                    numberOfColumns = 5;
+                    numberOfRows = 4;
+                } else {
+                    numberOfColumns = Math.ceil(themesNameArr.length / 4);
+                    numberOfRows = Math.ceil(themesNameArr.length / numberOfColumns);
+                }
+            } else if (window.innerWidth > 720 && window.innerWidth <= 1175) {
+                // Ширина окна от 721 до 1175 пикселей
+                numberOfColumns = 3;
+                if (themesNameArr.length === 12) {
+                    numberOfRows = 4;
+                } else if (themesNameArr.length <= 9) {
+                    numberOfRows = Math.ceil(themesNameArr.length / numberOfColumns);
+                } else if (themesNameArr.length <= 15) {
+                    numberOfRows = 5;
+                } else if (themesNameArr.length <= 18) {
+                    numberOfRows = 6;
+                } else if (themesNameArr.length <= 20) {
+                    numberOfRows = 7;
+                } else {
+                    numberOfRows = Math.ceil(themesNameArr.length / numberOfColumns);
+                }
+            } else if (window.innerWidth <= 720) {
+                // Ширина окна 720 пикселей или меньше
+                numberOfColumns = 2;
+                if (themesNameArr.length === 12) {
+                    numberOfRows = 6;
+                } else if (themesNameArr.length <= 9) {
+                    numberOfRows = Math.ceil(themesNameArr.length / numberOfColumns);
+                } else if (themesNameArr.length <= 15) {
+                    numberOfRows = 8;
+                } else if (themesNameArr.length <= 18) {
+                    numberOfRows = 9;
+                } else if (themesNameArr.length <= 20) {
+                    numberOfRows = 10;
+                } else {
+                    numberOfRows = Math.ceil(themesNameArr.length / numberOfColumns);
+                }
+            }
+           
         
         if(typeOfButtons === 'hexagon'){
             for (let i = 0; i < numberOfColumns; i++) {
@@ -191,6 +222,13 @@ function waitForData() {
                     item.classList.add('small');
                 });
             } 
+            let contentDivTiles = document.querySelector('.content__div');
+            contentDivTiles.style.height = (window.innerHeight + (document.querySelector('#header').clientHeight) - 280) + 'px';
+            let tilesField = document.querySelector('.content__div_center');
+            // Увеличиваем высоту на 100 пикселей
+            let newHeight = tilesField.clientHeight + 30;
+            // Применяем новую высоту
+            tilesField.style.height = newHeight + 'px';
 
         } else if (typeOfButtons === 'tiles') {
             const themesNameArr = themesOfEOM1.split('\n');
@@ -269,10 +307,10 @@ function waitForData() {
             console.log(window.innerHeight)
             
             let contentDivTiles = document.querySelector('.content__div');
-            contentDivTiles.style.height = (window.innerHeight - document.querySelector('#header').clientHeight - 80) + 'px';
+            contentDivTiles.style.height = (window.innerHeight - document.querySelector('#header').clientHeight - 100) + 'px';
             let tilesField = document.querySelector('.content__div_center');
             // Увеличиваем высоту на 100 пикселей
-            let newHeight = tilesField.clientHeight + 80;
+            let newHeight = tilesField.clientHeight - 30;
             // Применяем новую высоту
             tilesField.style.height = newHeight + 'px';
 
@@ -293,7 +331,7 @@ function waitForData() {
 
             let viewportHeight = window.innerHeight;
             let blackHeaderHeight = document.querySelector('#header').clientHeight;
-            document.querySelector('#content').style.height = (viewportHeight - blackHeaderHeight*2 + 11) + 'px';
+            document.querySelector('#content').style.height = (viewportHeight - blackHeaderHeight*2 + 100) + 'px';
             let buttonsHTML = timings.map((item, index) => 
                 `<button class="timing_buttons" value="${item.time}" id="timing0${index+1}">${item.name}</button>`
             ).join('');
@@ -362,6 +400,7 @@ function waitForData() {
             if (window.innerWidth <= 1100){
                 let videoContentDiv = document.querySelector('.video_div');
                 videoContentDiv.style.setProperty('height', 'initial', 'important'); // Устанавливаем важное свойство стиля
+                
             }
         }
     });
@@ -378,9 +417,7 @@ function waitForData() {
     });
 
 
-    if (typeOfButtons != 'video' && typeOfButtons != 'tiles') {
-        document.querySelector('.content__div').style.height = (viewportHeight - blackHeaderHeight * 2 + 10) + 'px';
-    }
+
 }
 
 let toMenuBtn = document.querySelector('#backward_button');
