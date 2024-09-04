@@ -260,8 +260,10 @@ p {
     background-color: rgb(255, 114, 118);
     margin: 5px;
     padding: 7vh;
-    width: 270px;
-    height: 215px;
+    width: 270px !important;
+    height: 215px !important;
+    max-width: 270px !important;
+    max-height: 215px !important;
     border: 0;
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
     transition-duration: 0.5s;

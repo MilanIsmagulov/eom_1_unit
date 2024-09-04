@@ -10,7 +10,7 @@ backgroundColor.classList = 'background_color';
 mainBody.appendChild(backgroundColor);
 backgroundImage.classList = 'background_image';
 mainBody.appendChild(backgroundImage);
-miniHead.innerHTML = `originalTitle`;
+blackHeader.innerHTML = originalTitle;
 
 var typeOfDrop = `<img width="100%" src="./content/background_${background_type}.jpg" alt="background">`;
 
